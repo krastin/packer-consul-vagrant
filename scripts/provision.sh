@@ -51,6 +51,18 @@ rm $VBOX_ISO
 # unattended apt-get upgrade
 DEBIAN_FRONTEND=noninteractive DEBIAN_PRIORITY=critical apt-get -q -y -o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options::=--force-confold" upgrade
 
+## Box specific provision
+# Install tools for consul install
+apt-get -y install curl unzip
+
+# Download latest version of Consul
+curl -s https://www.consul.io/downloads.html \
+| sed -n -e 's/^.*\(https:.*_linux_amd64.zip\).*/\1/p' \
+| xargs -L 1 wget -O /tmp/consul.zip
+
+# Install Consul
+unzip /tmp/consul.zip -d /usr/local/bin/
+
 apt-get autoremove -y
 apt-get clean
 
