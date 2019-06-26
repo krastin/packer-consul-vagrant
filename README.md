@@ -23,8 +23,6 @@ This repository attempts to store the minimum amount of code that is required to
 - for VirtualBox
 
 # To Do
-- [ ] create makefile
-- [ ] add consul to box
 - [ ] add kitchen install
 - [ ] create kitchen test
 - [ ] add kitchen test to makefile
@@ -33,4 +31,6 @@ This repository attempts to store the minimum amount of code that is required to
 - [x] build initial readme
 - [x] create json template file
 - [x] copy boot provisioning script
+- [x] create makefile
+- [x] add consul to box
 
