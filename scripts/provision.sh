@@ -68,7 +68,7 @@ touch /etc/consul.d/consul.hcl
 touch /etc/consul.d/server.hcl
 touch /etc/consul.d/client.hcl
 chown -R consul /etc/consul.d
-chmod 640 /etc/consul.d/consul.hcl
+chmod 640 /etc/consul.d/*.hcl
 # Add autocomplete
 consul -autocomplete-install
 complete -C /usr/local/bin/consul consul
