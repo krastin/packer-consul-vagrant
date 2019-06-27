@@ -78,7 +78,6 @@ This repository attempts to store the minimum amount of code that is required to
 - for VirtualBox
 
 # To Do
-- [ ] create kitchen test
 - [ ] add kitchen test to makefile
 
 # Done
@@ -88,4 +87,5 @@ This repository attempts to store the minimum amount of code that is required to
 - [x] create makefile
 - [x] add consul to box
 - [x] add kitchen install
+- [x] create kitchen test
 
