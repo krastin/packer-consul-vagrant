@@ -56,18 +56,16 @@ bundle install
 
 # How to test
 
+    make test
+
+
+Or for more control over what happens:
+
 ```
 bundle exec kitchen converge
 bundle exec kitchen verify
 bundle exec kitchen destroy
 ```
-
-Or in one-shot:
-
-```
-bundle exec kitchen test
-```
-
 
 # Purpose
 
@@ -78,7 +76,7 @@ This repository attempts to store the minimum amount of code that is required to
 - for VirtualBox
 
 # To Do
-- [ ] add kitchen test to makefile
+Nada
 
 # Done
 - [x] build initial readme
@@ -88,4 +86,5 @@ This repository attempts to store the minimum amount of code that is required to
 - [x] add consul to box
 - [x] add kitchen install
 - [x] create kitchen test
+- [x] add kitchen test to makefile
 
