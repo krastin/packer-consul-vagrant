@@ -18,6 +18,10 @@ describe package('unzip') do
   it { should be_installed }
 end
 
+describe package('policykit-1') do
+  it { should be_installed }
+end
+
 control 'os-family-version' do
   describe os.family do
     it { should eq 'debian' }
