@@ -67,7 +67,6 @@ mkdir /etc/consul.d
 touch /etc/consul.d/consul.hcl
 touch /etc/consul.d/server.hcl
 touch /etc/consul.d/client.hcl
-chown -R consul /etc/consul.d
 chmod 640 /etc/consul.d/*.hcl
 # Add autocomplete
 consul -autocomplete-install
@@ -81,6 +80,7 @@ EOF
 useradd --system --home /etc/consul.d --shell /bin/false consul
 mkdir --parents /opt/consul
 chown --recursive consul /opt/consul
+chown -R consul /etc/consul.d
 # Set up consul config for systemd
 cat <<EOF >> /etc/systemd/system/consul.service
 [Unit]
