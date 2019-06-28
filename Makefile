@@ -1,5 +1,3 @@
-vm-provider := vbox
-
 default: all
 
 all: xenial-consul-vbox.box
@@ -14,6 +12,6 @@ test: xenial-consul-vbox.box
 
 .PHONY: clean
 clean:
-    -bundle exec kitchen destroy
+	-bundle exec kitchen destroy
 	-vagrant box remove -f xenial-consul --provider virtualbox
 	-rm -fr output-*/ *.box

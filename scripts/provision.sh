@@ -53,7 +53,7 @@ DEBIAN_FRONTEND=noninteractive DEBIAN_PRIORITY=critical apt-get -q -y -o "Dpkg::
 
 ## Box specific provision
 # Install tools for consul install
-apt-get -y install curl unzip
+apt-get -y install curl unzip policykit-1
 
 # Download latest version of Consul
 curl -s https://www.consul.io/downloads.html \
@@ -62,6 +62,47 @@ curl -s https://www.consul.io/downloads.html \
 
 # Install Consul
 unzip /tmp/consul.zip -d /usr/local/bin/
+chown root:root /usr/local/bin/consul
+mkdir /etc/consul.d
+touch /etc/consul.d/consul.hcl
+touch /etc/consul.d/server.hcl
+touch /etc/consul.d/client.hcl
+chown -R consul /etc/consul.d
+chmod 640 /etc/consul.d/*.hcl
+# Add autocomplete
+consul -autocomplete-install
+complete -C /usr/local/bin/consul consul
+# Setup config consul.hcl
+cat <<EOF >> /etc/consul.d/consul.hcl
+datacenter = "dc1"
+data_dir = "/opt/consul"
+EOF
+# Create a Consul user to run under
+useradd --system --home /etc/consul.d --shell /bin/false consul
+mkdir --parents /opt/consul
+chown --recursive consul /opt/consul
+# Set up consul config for systemd
+cat <<EOF >> /etc/systemd/system/consul.service
+[Unit]
+Description="HashiCorp Consul - A service mesh solution"
+Documentation=https://www.consul.io/
+Requires=network-online.target
+After=network-online.target
+ConditionFileNotEmpty=/etc/consul.d/consul.hcl
+
+[Service]
+User=consul
+Group=consul
+ExecStart=/usr/local/bin/consul agent -config-dir=/etc/consul.d/
+ExecReload=/usr/local/bin/consul reload
+KillMode=process
+Restart=on-failure
+LimitNOFILE=65536
+
+[Install]
+WantedBy=multi-user.target
+EOF
+systemctl enable consul
 
 apt-get autoremove -y
 apt-get clean
