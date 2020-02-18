@@ -53,7 +53,10 @@ DEBIAN_FRONTEND=noninteractive DEBIAN_PRIORITY=critical apt-get -q -y -o "Dpkg::
 
 ## Box specific provision
 # Install tools for consul install
-apt-get -y install curl unzip policykit-1
+apt-get -y install curl unzip policykit-1 jq
+
+# Install tools that make life better
+apt-get -y install vim tmux
 
 # Download latest version of Consul
 curl -s https://www.consul.io/downloads.html \
