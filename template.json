@@ -1,5 +1,6 @@
 {
   "variables": {
+    "version": "null",
     "name": "krastin/xenial-consul",
     "build_name": "xenial-consul",
     "build_cpu_cores": "2",
@@ -26,8 +27,8 @@
   },
   "builders": [
     {
-      "name": "{{ user `build_name` }}-vbox",
-      "vm_name": "{{ user `build_name` }}-vbox",
+      "name": "{{ user `build_name` }}",
+      "vm_name": "{{ user `build_name` }}-{{ user `version` }}",
       "boot_command": [
         "<enter><f6><esc><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
         "preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg ",
@@ -93,6 +94,7 @@
     {
       "execute_command": "echo 'vagrant' | {{.Vars}} sudo -E -S bash '{{.Path}}'",
       "script": "scripts/provision.sh",
+      "environment_vars": ["VERSION={{user `version`}}"],
       "type": "shell"
     }
   ],
@@ -100,7 +102,7 @@
     {
       "type": "vagrant",
       "keep_input_artifact": true,
-      "output": "{{.BuildName}}.box"
+      "output": "{{ user `build_name` }}-{{ user `version` }}.box"
     }
   ]
 }

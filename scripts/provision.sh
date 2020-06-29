@@ -58,13 +58,17 @@ apt-get -y install curl unzip policykit-1 jq
 # Install tools that make life better
 apt-get -y install vim tmux
 
-# Download latest version of Consul
-curl -s https://www.consul.io/downloads.html \
-| sed -n -e 's/^.*\(https:.*_linux_amd64.zip\).*/\1/p' \
-| xargs -L 1 wget -O /tmp/consul.zip
-
 # Install Consul
-unzip /tmp/consul.zip -d /usr/local/bin/
+if [ -z "$VERSION" ]; then
+  VERSION=`curl -sL https://releases.hashicorp.com/consul/index.json | jq -r '.versions[].version' | sort -V | egrep -v 'beta|rc|alpha' | tail -1`
+fi
+which consul || {
+  cd /usr/local/bin
+  wget https://releases.hashicorp.com/consul/${VERSION}/consul_${VERSION}_linux_amd64.zip
+  unzip consul_${VERSION}_linux_amd64.zip
+}
+
+# Setup Consul
 chown root:root /usr/local/bin/consul
 mkdir /etc/consul.d
 touch /etc/consul.d/consul.hcl
