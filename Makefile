@@ -20,7 +20,13 @@ xenial-consul-${VERSION}.box: template.json scripts/provision.sh http/preseed.cf
 	#vagrant box add --force --name xenial-consul --box-version ${VERSION} ./xenial-consul-${VERSION}.box  
 
 publish: xenial-consul-${VERSION}.box
+ifneq (,$(findstring ent,$(VERSION)))
+	@echo publishing ENT version to krastin/xenial-consul-enterprise
+	vagrant cloud publish --box-version $(firstword $(subst +, ,$(VERSION))) --force --release krastin/xenial-consul-enterprise $(firstword $(subst +, ,$(VERSION))) virtualbox xenial-consul-${VERSION}.box
+else
+	@echo publishing OSS version to krastin/xenial-consul
 	vagrant cloud publish --box-version ${VERSION} --force --release krastin/xenial-consul ${VERSION} virtualbox xenial-consul-${VERSION}.box
+endif
 
 test: xenial-consul-${VERSION}.box
 	bundle exec kitchen test default-krastin-xenial-consul
